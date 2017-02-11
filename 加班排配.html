@@ -201,11 +201,7 @@ $(function(){
 
 /* 读取数据 */
 (function(){
-	if(localStorage.month!=global.month&&localStorage.month!=0){
-		    localStorage.clear();
-			window.location.href = 
-			"file:///C:/Users/Administrator/Desktop/新建文件夹/加班排配/加班排配.html";
-	}
+	
 	localStorage.month=global.month;
 	var xx=1;
 	for(var kl in global.x){xx++;}
