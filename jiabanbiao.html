@@ -12,12 +12,15 @@ body{
 }
 .index1{
 	width:1110px;
-    margin:auto;
+        margin:auto;
 	margin-top:150px;
 }
 table{
 	border-collapse:collapse;
 	width:1100px;
+}
+.thr{
+	width:27px;
 }
 td{
 	border:1px solid black;
@@ -109,7 +112,7 @@ $(function(){
 	    //参数global.h;
 	    for(var i=1;i<global.h;i++){
 			if(i<10){
-			var x="<td id='th"+i+"'>"+i+"&nbsp;</td>";
+			var x="<td class='thr' id='th"+i+"'>"+i+"</td>";
 			}else{var x="<td id='th"+i+"'>"+i+"</td>";}
 			$(x).insertBefore(".tdk");
 		}
