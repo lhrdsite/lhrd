@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CSS3-记忆笔录</title>
+<script src="jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css"/>
+<script src="storage.js"></script>
+<style>
+body{
+	font-size:15px;
+}
+.index1{
+	width:1110px;
+    margin:auto;
+	margin-top:150px;
+}
+table{
+	border-collapse:collapse;
+	width:1100px;
+}
+td{
+	border:1px solid black;
+	height:25px;
+	text-align:center;
+}
+.input{
+	margin-top:20px;
+	margin-left:300px;
+	background-color:red;
+	color:#FFF;
+	border-radius:8px;
+	line-height:28px;
+	padding:1px;
+	font-size:18px;
+}
+#jiSuan{
+	background-color:#33C;
+}
+#reset{
+	margin-left:300px;
+}
+.hover:hover{
+	background-color:#99F;
+}
+
+</style>
+<script>
+(function(){
+$(function(){
+	                    /****
+						 *全局函数:
+						 *1、global.x(人员列表对象);
+						 *2、global.D(new时间对象)；
+						 *3、global.month(月)；  
+						 *4、global.h(当月总天数+1)；
+						 *
+						 *
+						 ****/
+						
+	var global={};
+	    global.x={
+				   "F1053354":"叶月生",
+				   "F1052194":"孫麒麟",
+				   "F1053332":"曾偉安",
+				   "F1053403":"湯麗麗",
+				   "F1053425":"李婭妮",
+				   "F1053490":"曾科", 
+				   "F1053742":"唐達志",
+				   "F1053759":"官勇強",
+				   "F1053834":"寧光鵬",
+				   "F1215025":"楊志剛",
+				   "F1215920":"曹雄剛",
+				   "F3407364":"秦金紅",
+				   "F3412882":"範劍鋒",
+				   "F9447494":"何惠君"	
+			      };
+	    global.D=new Date();
+		/*global.D.setMonth(3);   */     /*----用于手动改变月份*/
+	    global.month=global.D.getMonth()+1;
+		global.year=global.D.getFullYear();
+		
+	    global.h=(function(){
+					  if(
+					     global.month===1||
+					     global.month===3||
+						 global.month===5||
+						 global.month===7||
+						 global.month===8||
+						 global.month===10||
+						 global.month===12
+						 ){h=32;}
+					  else {   
+							  if(
+							     global.month===4||
+							     global.month===6||
+								 global.month===9||
+								 global.month===11
+								 ){h=31;}
+							  else if(global.year%4){h=29;}
+							       else{h=30}
+						   }
+					  return h;
+				  }());
+				  
+		 
+/*创建表头*/
+	(function(){
+	    //参数global.h;
+	    for(var i=1;i<global.h;i++){
+			if(i<10){
+			var x="<td id='th"+i+"'>"+i+"&nbsp;</td>";
+			}else{var x="<td id='th"+i+"'>"+i+"</td>";}
+			$(x).insertBefore(".tdk");
+		}
+		$(".trk").css("background-color","#9FF");
+		var xxl=global.D.getMonth()+1;
+		$("#yue").text(xxl);
+		var xxj=global.D.getFullYear();
+		$("#year").text(xxj);
+		global.xxk=global.D.getDate();
+		$("#ri").text(global.xxk);
+		var xxg=global.D.getDay();
+		$("#zhou").text(xxg);
+		
+	}());
+	
+	
+/* 创建员工名单body行 */
+    (function(){
+		//参数global.h;参数global.x;
+		var xx=1;
+		for(var kl in global.x){xx++;}
+		for(var h=1;h<xx;h++){
+			var y="<tr class='hover' id='body"+h+"'><td>"+h+
+			      "</td><td id='F"+h+
+				  "'></td><td id='name"+h+
+				  "'></td></tr>";
+			$(y).appendTo("table");
+			for(var i=1;i<global.h+3;i++){
+				var x="<td id='w"+h+"h"+i+"' contenteditable='true'></td>";
+				var A="#body"+h;
+				$(x).appendTo(A);
+			}
+		}
+	}());
+	
+
+/* 创建表脚2行 */	
+    (function(){
+		//参数global.h;
+		for(var h=1;h<3;h++){
+			var y="<tr id='foot"+h+
+			      "'><td colspan='3' id='tw"+h+
+				  "h1"+"'></td></tr>";
+			$(y).appendTo("table");
+			for(var i=1;i<global.h+3;i++){
+				var x="<td id='tw"+h+"h"+(i+1)+"'></td>";
+				var A="#foot"+h;
+				$(x).appendTo(A);
+			}
+		}
+	}());
+	
+	
+/* 初始化--填充文字；*/
+   (function(){
+	    $("#tw1h1").text("当日加班人数");
+		$("#tw1h1").css({"background-color":" #093","color":"white"});
+		$("#tw2h1").css({"background-color":" #093","color":"white"});
+		$("#tw2h1").text("比例");
+		 var i=1
+		for(var x in global.x){
+			$("#F"+i).text(x);
+			$("#name"+i).text(global.x[x]);
+			i++;
+		}
+	}());
+	
+	
+/* 双休----标记；*/
+    (function(){
+		
+		for(var i=1;i<global.h;i++){
+			global.D.setDate(i);
+			x=global.D.getDay();
+			if(x===0||x===6){
+			    $("#th"+i).css("background-color","yellow");
+				if(x===6){
+					var xx=1;
+		            for(var kl in global.x){xx++;}
+					for(var gh=1;gh<xx;gh++){
+					$("#w"+gh+"h"+i).css("background-color","#FC0");
+					}
+				}
+			}
+		}
+		
+	}());
+
+
+/* 读取数据 */
+(function(){
+	if(localStorage.month!=global.month&&localStorage.month!=0){
+		    localStorage.clear();
+			window.location.href = 
+			"file:///C:/Users/Administrator/Desktop/新建文件夹/加班排配/加班排配.html";
+	}
+	localStorage.month=global.month;
+	var xx=1;
+	for(var kl in global.x){xx++;}
+	for(var y=1;y<xx;y++){
+		for(var i=1;i<global.h;i++){
+			var x="w"+y+"h"+i;
+			if(localStorage[x]){
+				$("#"+x).text(localStorage[x]);
+			}
+		}
+	}
+	/*标注 当天 颜色*/
+	var xx=1;
+	for(var kl in global.x){xx++;}
+	for(var w=1;w<xx;w++){
+		$("#w"+w+"h"+global.xxk).css("background-color","#9F9");
+	}
+	
+	
+	
+}());
+
+
+
+
+/* 单击按钮 开始计算 */
+    $("#jiSuan").click(function(){
+		var xx=1;
+	    for(var kl in global.x){xx++;}
+		
+	    /*保存数据*/
+	    for(var y=1;y<xx;y++){
+			for(var i=1;i<global.h;i++){
+				var x="w"+y+"h"+i;
+				localStorage[x]=$("#"+x).text();
+			}
+	    }
+
+        /* G2\G2\合计 */
+		for(var hr=1;hr<xx;hr++){
+			var sum_G2=0,sum_G1=0,sum_add=0;
+			for(var i=1;i<global.h;i++){
+				global.D.setDate(i);
+				x=global.D.getDay();
+				if(x===0||x===6){
+					var xl=$("#w"+hr+"h"+i).text();
+					if(!xl){xl=0;}
+					sum_G2=sum_G2+parseInt(xl);
+				}else{
+					var zl=$("#w"+hr+"h"+i).text();
+					if(!zl){zl=0;}
+					sum_G1=sum_G1+parseInt(zl);
+				}
+			}
+			sum_add=sum_G2+sum_G1;
+			$("#w"+hr+"h"+(global.h+1)).text(sum_G2.toString());
+			$("#w"+hr+"h"+(global.h)).text(sum_G1.toString());
+			$("#w"+hr+"h"+(global.h+2)).text(sum_add.toString());	
+		}
+
+        /* 当日加班人数、比例 */
+        for(var gl=1;gl<global.h;gl++){
+			var sum_dayMan=0;
+			for(var hj=1;hj<xx;hj++){
+				var jl=$("#w"+hj+"h"+gl).text();
+				if(!jl){jl=0;}else{jl=1}
+				sum_dayMan=sum_dayMan+parseInt(jl);
+			}
+			var scale=Math.round(sum_dayMan/(xx-1)*100);
+			if(scale>=40){
+				$("#tw2h"+(gl+1))
+				.css({"background":" #C6F","color":"white"});
+			}
+			if(scale>50){
+				$("#tw2h"+(gl+1))
+				.css({"background":" red","color":"white"});}
+			$("#tw2h"+(gl+1)).text(scale.toString()+"%");
+			$("#tw2h"+(gl+1)).css("font-size","10px");
+			$("#tw1h"+(gl+1)).text(sum_dayMan.toString());
+		}
+	})
+	
+	
+/* 单击 清空所有 */
+    $("#reset").click(function(){
+		if(confirm(
+		"****************************************\n\n\n你确定要【清 空】数据？\n\n\n****************************************"
+		)){
+			localStorage.clear();
+			window.location.href = 
+			"file:///C:/Users/Administrator/Desktop/新建文件夹/加班排配/加班排配.html";
+		}
+	})
+
+
+})
+}());
+</script>
+</head>
+
+<body>
+<div class="index1">
+<table>
+  <tr class="trk">
+      <td>NO.</td>
+      <td>工号</td>
+      <td>姓名</td>
+      <td style="background-color: #093;color:white;" class="tdk">G1</td>
+      <td style="background-color: #093;color:white;">G2</td>
+      <td style="background-color: #093;color:white;">合计</td>
+  </tr>
+  
+</table>
+<input class="input" id="jiSuan" type="button" value="开始计算"/>
+<input class="input" id="reset" type="button" value="   清  空   "/>
+<div style="position:absolute;top:0px;margin-top:30px;margin-left:365px;font-size:22px;background-color:#CF0;border-radius:10px;width:320px;padding:2px;box-shadow:2px 2px 3px 3px black">
+<p>当前日期：<span id="year"></span> 年
+           <span id="yue"></span> 月
+           <span id="ri"></span> 日</p> 
+           <br/>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;星期<span id="zhou"></span></p>
+</div>
+<br/>
+<br/>
+</div>
+<hr/>
+<div class="index">
+<div class="seach_screen">
+	<p>搜索&nbsp;<input type="text" size="10"/></p>
+	<ul>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
+</div>
+
+
+
+<div class="show_screen">
+	<div>
+		<span class="sb">名词</span>
+		<button id="add" class="btn_add">添加&nbsp;+</button>
+        <input id="git" class="add_words" type="text" size="15">
+	</div>
+
+	<div>
+		<div>
+            <pre>
+是一个很神奇的世界充满了各种诱惑,
+虽然不知道你是怎么回事，
+死亡与你同行。
+            </pre>  
+        </div>
+		<textarea id="fuck"></textarea>
+        <div id="she" class="place_hold">
+            <form>
+            <input class="load_file" type="file"/>
+            <span> 地址&nbsp;<input id="dizhi" type="text" size="3"/></span>
+            <input class="reset" type="reset" style="background-color:#F66;" value="清空"/>
+            </form>
+            <button style="background-color:#6C6;" class="btn_submit">上传</button>
+        </div>
+        <img class="photo" src="相册.bmp"/>
+        <div class="background_tong" id="album_one" >
+            <span>无<br/>图<br/>片</span>
+        </div>
+        <div class="background_tong" id="album_two">
+            <span>无<br/>图<br/>片</span>
+        </div>
+        <div class="background_tong" id="album_three">
+            <span>无<br/>图<br/>片</span>
+        </div>
+	</div>
+</div>
+</div>
+<div id="yemu">
+</div>
+<div id="tuce">
+<span><div id="kuang"><!--<img  src="f2.png"/><p id="close">关闭</p>--></div></span>
+</div>
+
+</body>
+</html>
